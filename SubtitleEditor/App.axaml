@@ -1,0 +1,18 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:SubtitleEditor"
+             xmlns:converters="clr-namespace:SubtitleEditor.Converters"
+             x:Class="SubtitleEditor.App">
+    <Application.Resources>
+        <converters:MsTimeFormatConverter x:Key="msTimeFormatConverter" />
+        <converters:BoolToPlayStopConverter x:Key="boolToPlayStopConverter"/>
+        <converters:PathToBitmapConverter x:Key="pathToBitmapConverter"></converters:PathToBitmapConverter>
+    </Application.Resources>
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme Mode="Dark"/>
+    </Application.Styles>
+</Application>

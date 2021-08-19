@@ -1,0 +1,79 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SubtitleEditor.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SubtitleEditor.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SubtitleEditor">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Background="#232323">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open Subtitles" Click="LoadSubtitleFile"></MenuItem>
+                <MenuItem Header="Open _Video" Click="OpenVideoFile"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="_Quit"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Background="#343434">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="8*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <vlc:VideoView Grid.Row="0" Grid.Column="1" MediaPlayer="{Binding MediaPlayer}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Slider Padding="16, 0" Minimum="0.0" Maximum="1.0" Value="{Binding VideoPosition}"></Slider>
+                <Label Padding="24, 0" HorizontalAlignment="Right">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource msTimeFormatConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="VideoPosition"></Binding>
+                                <Binding Path="VideoLength"></Binding>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Label.Content>
+                
+                </Label>
+            </StackPanel>
+            <WrapPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                <Button Margin="4" Click="GoBackInVideo"></Button>
+                <Button Margin="4" Click="PlayStop">
+                    <Button.Content>
+                        <Binding Converter="{StaticResource boolToPlayStopConverter}" Path="Playing">
+                        </Binding>
+                    </Button.Content>
+                </Button>
+                <Button Margin="4" Click="GoForwardInVideo"></Button>
+            </WrapPanel>
+        
+            <ListBox Items="{Binding Subtitles}">
+            </ListBox>
+            
+            <WrapPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Margin="4" Click="SaveFile">Save To File</Button>
+                <Button Margin="4" Click="AdjustSubtitles">Adjust Start</Button>
+            </WrapPanel>
+            
+            
+        
+        </Grid>
+    </DockPanel>
+    
+    
+
+
+</Window>
